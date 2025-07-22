@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>QR Code Generator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin-top: 20px;
+    }
+    .form-container {
+      margin-bottom: 20px;
+    }
+    .poster {
+      position: relative;
+      width: 350px;
+      height: 500px;
+      margin: 0 auto;
+      background-image: url('poster.png'); /* Replace with your actual image file */
+      background-size: cover;
+      border: 1px solid #ccc;
+    }
+    #qrcode {
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 120px;
+      height: 120px;
+      background: white;
+      padding: 5px;
+    }
+    button {
+      margin-top: 10px;
+      padding: 8px 16px;
+    }
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+</head>
+<body>
+
+  <div class="form-container">
+    <label>Store Number: <input type="text" id="storeInput" /></label><br><br>
+    <label>Area: <input type="text" id="areaInput" /></label><br><br>
+    <button onclick="generateQR()">Generate QR</button>
+  </div>
+
+  <div id="posterWrapper">
+    <div class="poster" id="poster">
+      <div id="qrcode"></div>
+    </div>
+  </div>
+
+  <button onclick="printPoster()">Print</button>
+
+  <script>
+    function generateQR() {
+      const store = document.getElementById('storeInput').value.trim();
+      const area = document.getElementById('areaInput').value.trim();
+
+      if (!store || !area) {
+        alert('Please enter both Store Number and Area');
+        return;
+      }
+
+      const url = `https://example.com/qr?store=${encodeURIComponent(store)}&area=${encodeURIComponent(area)}`;
+
+      // Clear previous QR
+      document.getElementById('qrcode').innerHTML = '';
+
+      // Generate new QR
+      new QRCode(document.getElementById("qrcode"), {
+        text: url,
+        width: 120,
+        height: 120
+      });
+    }
+
+    function printPoster() {
+      const originalContent = document.body.innerHTML;
+      const poster = document.getElementById('posterWrapper').innerHTML;
+      document.body.innerHTML = poster;
+      window.print();
+      document.body.innerHTML = originalContent;
+    }
+  </script>
+
+</body>
+</html>
