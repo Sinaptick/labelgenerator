@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Walmart QR Label</title>
+  <style>
+    body {
+      font-family: "Segoe UI", sans-serif;
+      text-align: center;
+      margin: 20px;
+    }
+
+    .form-container {
+      margin-bottom: 20px;
+    }
+
+    .label-wrapper {
+      width: 3.5in;
+      height: 5in;
+      margin: 0 auto;
+      position: relative;
+      border: 1px solid #ccc;
+    }
+
+    .label-content {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+    }
+
+    .label-content img {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 0;
+    }
+
+    #qrcode {
+  position: absolute;
+  width: 1.55in;
+  height: 1.55in;
+  bottom: 0.20in;     /* moved lower */
+  left: 50%;
+  transform: translateX(-50%);
+  background: white;
+  padding: 0;
+  z-index: 2;
+}
+
+    button {
+      margin-top: 10px;
+      padding: 10px 20px;
+      font-size: 1em;
+    }
+
+    @media print {
+      body * {
+        visibility: hidden;
+      }
+      .label-wrapper, .label-wrapper * {
+        visibility: visible;
+      }
+      .label-wrapper {
+        position: absolute;
+        top: 0;
+        left: 0;
+      }
+    }
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+</head>
+<body>
+
+  <div class="form-container">
+    <label>Store Number: <input type="text" id="storeInput" /></label>
+    <label>Area: <input type="text" id="areaInput" /></label>
+    <button onclick="generateQR()">Generate QR</button>
+  </div>
+
+  <div class="label-wrapper" id="label">
+    <div class="label-content">
+      <img src="walmart_bg.png" alt="Walmart Label Background">
+      <div id="qrcode"></div>
+    </div>
+  </div>
+
+  <button onclick="printLabel()">Print</button>
+
+  <script>
+    function generateQR() {
+      const store = document.getElementById('storeInput').value.trim();
+      const area = document.getElementById('areaInput').value.trim();
+
+      if (!store || !area) {
+        alert("Please enter both Store Number and Area");
+        return;
+      }
+
+      const url = `https://example.com/qr?store=${encodeURIComponent(store)}&area=${encodeURIComponent(area)}`;
+
+      document.getElementById('qrcode').innerHTML = '';
+      new QRCode(document.getElementById("qrcode"), {
+        text: url,
+        width: 186,
+        height: 186
+      });
+    }
+
+    function printLabel() {
+      window.print();
+    }
+  </script>
+
+</body>
+</html>
