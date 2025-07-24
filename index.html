@@ -134,20 +134,12 @@
       .catch(error => {
         console.error('Error shortening URL:', error);
         // Fallback to original URL if shortening fails
-        new QRCode(document.getElementById("qrcode"), {
-          text: fullUrl,
-          width: 186,
-          height: 186
-        });
-      });
-  }
-  // ...existing code...
-  document.getElementById('qrcode').innerHTML = '';
   new QRCode(document.getElementById("qrcode"), {
-    text: url,
-    width: 186,
-    height: 186
-  });
+  text: fullUrl,
+  width: 186,
+  height: 186
+});
+      });
 }
 
     function printLabel() {
