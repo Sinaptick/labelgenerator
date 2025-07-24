@@ -107,7 +107,6 @@
     return;
   }
 
-    // ...existing code...
     if (store !== "1458") {
       errorDiv.textContent = "Invalid store number, only 1458 is allowed.";
       document.getElementById('qrcode').innerHTML = '';
@@ -134,11 +133,11 @@
       .catch(error => {
         console.error('Error shortening URL:', error);
         // Fallback to original URL if shortening fails
-  new QRCode(document.getElementById("qrcode"), {
-  text: fullUrl,
-  width: 186,
-  height: 186
-});
+        new QRCode(document.getElementById("qrcode"), {
+          text: fullUrl,
+          width: 186,
+          height: 186
+        });
       });
 }
 
