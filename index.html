@@ -81,6 +81,8 @@
     <button onclick="generateQR()">Generate QR</button>
   </div>
 
+  <div id="errorMsg" style="color: red; margin-bottom: 10px;"></div>
+
   <div class="label-wrapper" id="label">
     <div class="label-content">
       <img src="walmart_bg.png" alt="Walmart Label Background">
@@ -92,23 +94,34 @@
 
   <script>
     function generateQR() {
-      const store = document.getElementById('storeInput').value.trim();
-      const area = document.getElementById('areaInput').value.trim();
+  const store = document.getElementById('storeInput').value.trim();
+  const area = document.getElementById('areaInput').value.trim();
+  const errorDiv = document.getElementById('errorMsg');
 
-      if (!store || !area) {
-        alert("Please enter both Store Number and Area");
-        return;
-      }
+  // Clear previous error
+  errorDiv.textContent = '';
 
-      const url = `https://example.com/qr?store=${encodeURIComponent(store)}&area=${encodeURIComponent(area)}`;
+  if (!store || !area) {
+    errorDiv.textContent = "Please enter both Store Number and Area";
+    document.getElementById('qrcode').innerHTML = '';
+    return;
+  }
 
-      document.getElementById('qrcode').innerHTML = '';
-      new QRCode(document.getElementById("qrcode"), {
-        text: url,
-        width: 186,
-        height: 186
-      });
-    }
+  if (store !== "1458") {
+    errorDiv.textContent = "Invalid store number, only 1458 is allowed.";
+    document.getElementById('qrcode').innerHTML = '';
+    return;
+  }
+
+  const url = `https://script.google.com/macros/s/AKfycbx3W1JtctAps6LKiODDgP8mprTXDnTXmlcQzEYQCKZ-7eBArvYT3xnxdLSGGDZThKg_/exec?area=${encodeURIComponent(area)}&store=1458`;
+
+  document.getElementById('qrcode').innerHTML = '';
+  new QRCode(document.getElementById("qrcode"), {
+    text: url,
+    width: 186,
+    height: 186
+  });
+}
 
     function printLabel() {
       window.print();
