@@ -107,14 +107,41 @@
     return;
   }
 
-  if (store !== "1458") {
-    errorDiv.textContent = "Invalid store number, only 1458 is allowed.";
+    // ...existing code...
+    if (store !== "1458") {
+      errorDiv.textContent = "Invalid store number, only 1458 is allowed.";
+      document.getElementById('qrcode').innerHTML = '';
+      return;
+    }
+  
+    const fullUrl = `https://script.google.com/macros/s/AKfycbx3W1JtctAps6LKiODDgP8mprTXDnTXmlcQzEYQCKZ-7eBArvYT3xnxdLSGGDZThKg_/exec?area=${encodeURIComponent(area)}&store=1458`;
+  
+    // Clear previous QR code
     document.getElementById('qrcode').innerHTML = '';
-    return;
+    
+    // Use TinyURL to shorten the URL, then generate QR code
+    fetch(`https://tinyurl.com/api-create.php?url=${encodeURIComponent(fullUrl)}`)
+      .then(response => response.text())
+      .then(shortUrl => {
+        // Generate QR code with shortened URL
+        new QRCode(document.getElementById("qrcode"), {
+          text: shortUrl,
+          width: 186,
+          height: 186,
+          correctLevel: QRCode.CorrectLevel.L  // Lower error correction for simpler QR
+        });
+      })
+      .catch(error => {
+        console.error('Error shortening URL:', error);
+        // Fallback to original URL if shortening fails
+        new QRCode(document.getElementById("qrcode"), {
+          text: fullUrl,
+          width: 186,
+          height: 186
+        });
+      });
   }
-
-  const url = `https://script.google.com/macros/s/AKfycbx3W1JtctAps6LKiODDgP8mprTXDnTXmlcQzEYQCKZ-7eBArvYT3xnxdLSGGDZThKg_/exec?area=${encodeURIComponent(area)}&store=1458`;
-
+  // ...existing code...
   document.getElementById('qrcode').innerHTML = '';
   new QRCode(document.getElementById("qrcode"), {
     text: url,
